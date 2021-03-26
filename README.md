@@ -3,7 +3,7 @@ An Arduino project that uses a non invasive current sensor (on the TV's power co
 
 Requires:
 - Arduino Uno WiFi Rev 2.
-- Non Invasive Current Sensor. I am using https://www.dfrobot.com/product-1486.html
+- Non Invasive Current Sensor. I am using https://www.dfrobot.com/product-1486.html (Please ask an Electrician to fit this for you).
 - Philips Hue v2 Bridge.
 - Zigbee light(s) (i.e. Hue compatible). I am using the Ikea TRÅDFRI Zigbee Driver with Ikea OMLOPP LED spotlights.   
 
