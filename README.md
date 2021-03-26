@@ -31,4 +31,4 @@ Add a file called arduino_secrets.h with the following.
 #define _VREF 4.96 // Multimeter reading
 ```
 
-If you use this code, please open an issue with a link to a video clip of it working with your TV and any feedback.
+If you use this code, please open an issue and send feedback.
