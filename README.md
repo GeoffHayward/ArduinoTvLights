@@ -7,7 +7,7 @@ Requires:
 - Philips Hue v2 Bridge.
 - Zigbee light(s) (i.e. Hue compatible). I am using the Ikea TRÅDFRI Zigbee Driver with Ikea OMLOPP LED spotlights.   
 
-For details on the Hue Bridge REST API see https://developers.meethue.com/.
+For details on the Hue Bridge's REST API see https://developers.meethue.com/.
 
 ## Set up
 Add a file called arduino_secrets.h with the following.
