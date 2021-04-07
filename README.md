@@ -1,14 +1,13 @@
-# ArduinoTvLights
-An Arduino project that uses a non invasive current sensor (on the TV's power cord) to switch 
-the lights under my TV on/off respective to the TV state.
+# Arduino TV Lights
+An Arduino project that uses a non invasive current sensor (on the TV's power cord) to switch lights on/off respective to a TV's state.
 
 Requires:
 - Arduino Uno WiFi Rev 2.
-- Non Invasive Current Sensor. I am using https://www.dfrobot.com/product-1486.html
+- Non Invasive Current Sensor. I am using https://www.dfrobot.com/product-1486.html (Please ask an Electrician to fit this for you).
 - Philips Hue v2 Bridge.
 - Zigbee light(s) (i.e. Hue compatible). I am using the Ikea TRÅDFRI Zigbee Driver with Ikea OMLOPP LED spotlights.   
 
-See https://developers.meethue.com/ for details on the Hue Bridge REST API.
+For details on the Hue Bridge's REST API see https://developers.meethue.com/.
 
 ## Set up
 Add a file called arduino_secrets.h with the following.
@@ -31,3 +30,5 @@ Add a file called arduino_secrets.h with the following.
 // Arduino
 #define _VREF 4.96 // Multimeter reading
 ```
+
+If you use this code, please open an issue and send feedback.
