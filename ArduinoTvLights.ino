@@ -1,54 +1,64 @@
 #include "arduino_secrets.h"
+#include <SoftTimers.h>
 
 // Properties
 const float ON_THRESHOLD  = AC_CURRENT_ON_THRESHOLD;
 const float OFF_THRESHOLD = AC_CURRENT_OFF_THRESHOLD;
 
+// Variables
+SoftTimer loopTimer;
+SoftTimer onTimer;
+SoftTimer offTimer;
 
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
+  
+  loopTimer.setTimeOutTime(200);
+  loopTimer.reset();
+
+  onTimer.setTimeOutTime(2000);
+  onTimer.reset();
+
+  offTimer.setTimeOutTime(1000);
+  offTimer.reset();
 }
 
 void loop() {
 
   arduinoWifi();
-  
-  if(readACCurrentValue() >= ON_THRESHOLD) {
-    // Verify with n many readings.
-    for (int n = 3; 0 <= n && readACCurrentValue() >= ON_THRESHOLD; n--) {
-      Serial.print(n);
-      Serial.print(" - ");
-      Serial.print(readACCurrentValue());
-      Serial.println(" A - on");
-      if(n == 0) {
+
+  if(loopTimer.hasTimedOut()) {
+    
+    float ACCurrentValue = readACCurrentValue();
+
+    Serial.print("Loop - ");
+    Serial.print(ACCurrentValue);
+    Serial.println(" A");
+
+    if(ACCurrentValue  >= ON_THRESHOLD) {
+      if(onTimer.hasTimedOut()) {
+        // Serial.println("ON");
         hueLightsOn(); 
-        Serial.println("TV Lights on");
-      } else {
-        delay(200);
       }
+    } 
+    else {
+      Serial.println("ON RESET");
+      onTimer.reset();
     }
-  }
-  
-  else if(readACCurrentValue() <= OFF_THRESHOLD) {
-    // Verify with n many readings.
-    for (int n = 5; 0 <= n && readACCurrentValue() <= OFF_THRESHOLD; n--) {
-      Serial.print(n);
-      Serial.print(" - ");
-      Serial.print(readACCurrentValue());
-      Serial.println(" A - off");
-      if(n == 0) {
+
+    
+   if(ACCurrentValue  <= OFF_THRESHOLD) {
+      if(offTimer.hasTimedOut()) {
+        // Serial.println("OFF");
         hueLightsOff();
-      } else {
-        delay(200);
       }
+    } else {
+      Serial.println("OFF RESET");
+      offTimer.reset();
     }
+    
+    loopTimer.reset();
   }
   
-  else {
-    Serial.print(readACCurrentValue());
-    Serial.println(" A - gray zone");
-  }
-  
-  delay(200);
 }
