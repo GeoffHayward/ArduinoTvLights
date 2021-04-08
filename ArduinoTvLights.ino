@@ -1,32 +1,40 @@
 #include "arduino_secrets.h"
 #include <SoftTimers.h>
 
+#define LOOP_TIME 200
+#define ON_CHECK_TIME 1500 // The amount of time above the on threshold, before on is assumed true.
+#define OFF_CHECK_TIME 1500 // The amount of time under the off threshold, before off is assumed true.
+
 // Properties
 const float ON_THRESHOLD  = AC_CURRENT_ON_THRESHOLD;
 const float OFF_THRESHOLD = AC_CURRENT_OFF_THRESHOLD;
 
 // Variables
 SoftTimer loopTimer;
-SoftTimer onTimer;
-SoftTimer offTimer;
+SoftTimer onCheckTimer;
+SoftTimer offCheckTimer;
 
 void setup() {
+  // Serial for debugging
   Serial.begin(9600);
+
+  // Wifi connection
   pinMode(LED_BUILTIN, OUTPUT);
-  
-  loopTimer.setTimeOutTime(200);
+  digitalWrite(LED_BUILTIN, LOW); 
+  WiFiConnect();
+
+  // Soft timers
+  loopTimer.setTimeOutTime(LOOP_TIME);
   loopTimer.reset();
-
-  onTimer.setTimeOutTime(2000);
-  onTimer.reset();
-
-  offTimer.setTimeOutTime(1000);
-  offTimer.reset();
+  onCheckTimer.setTimeOutTime(ON_CHECK_TIME);
+  onCheckTimer.reset();
+  offCheckTimer.setTimeOutTime(OFF_CHECK_TIME);
+  offCheckTimer.reset();
 }
 
 void loop() {
 
-  arduinoWifi();
+  WiFiKeepConnection();
 
   if(loopTimer.hasTimedOut()) {
     
@@ -37,25 +45,20 @@ void loop() {
     Serial.println(" A");
 
     if(ACCurrentValue  >= ON_THRESHOLD) {
-      if(onTimer.hasTimedOut()) {
-        // Serial.println("ON");
+      if(onCheckTimer.hasTimedOut()) {
         hueLightsOn(); 
       }
-    } 
-    else {
-      Serial.println("ON RESET");
-      onTimer.reset();
+    } else {
+      onCheckTimer.reset();
     }
 
     
    if(ACCurrentValue  <= OFF_THRESHOLD) {
-      if(offTimer.hasTimedOut()) {
-        // Serial.println("OFF");
+      if(offCheckTimer.hasTimedOut()) {
         hueLightsOff();
       }
     } else {
-      Serial.println("OFF RESET");
-      offTimer.reset();
+      offCheckTimer.reset();
     }
     
     loopTimer.reset();
