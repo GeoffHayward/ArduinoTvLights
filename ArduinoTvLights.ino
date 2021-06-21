@@ -2,8 +2,8 @@
 #include <SoftTimers.h>
 
 #define LOOP_TIME 200
-#define ON_CHECK_TIME 1500 // The amount of time above the on threshold, before on is assumed true.
-#define OFF_CHECK_TIME 1500 // The amount of time under the off threshold, before off is assumed true.
+#define ON_CHECK_TIME 1000 // The amount of time above the on threshold, before on is assumed true.
+#define OFF_CHECK_TIME 2500 // The amount of time under the off threshold, before off is assumed true.
 
 // Properties
 const float ON_THRESHOLD  = AC_CURRENT_ON_THRESHOLD;
